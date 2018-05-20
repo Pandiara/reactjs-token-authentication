@@ -1,17 +1,35 @@
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import Counter from '../components/Counter'
-import Register from '../components/Register'
-// import * as CounterActions from '../actions'
-import * as RegisterActions from '../actions/user.actions';
+import React from 'react';
+import { Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { history } from '../helpers/history';
+import { Registration } from '../containers/Registration';
 
-const mapStateToProps = (state) => ({
-  counter: state.counter,
-  registration:state.registration
-})
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        const { dispatch } = this.props;
+        
+    }
+    render() {        
+        return (
+            <div >
+                <div >
+                    <div >
+                        <Router history={history}>
+                            <div>
+                                <Route path="/register" component={Registration} />
+                            </div>
+                        </Router>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators( RegisterActions, dispatch)
-  }
+const mapStateToProps=(state)=>({
+  alert:state.alert,
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register)
+const connectedApp = connect(mapStateToProps)(App);
+export { connectedApp as App }; 

@@ -1,24 +1,25 @@
-import {userConstants} from '../constants/user.constants'
-import {userService} from '../services/user.service'
-import {alertActions} from './alert.actions'
-  
-export const register =(user) =>(dispatch)=>{  
-  debugger;
-  dispatch(success(user))  
-  userService.register(user)
-            .then(
-                user => { 
-                    dispatch(success());
-                    // history.push('/login');
-                    dispatch(alertActions.success('Registration successful'));
-                },
-                error => {
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
-                }
-            );
-}
+import {userConstants} from '../constants/user.constants';
+import {registerService} from '../services/user.service';
+//import {alertActions} from './alert.actions'
+import {history} from '../helpers/history';
 
+export const register =(user) =>{  
+  return async dispatch =>{
+    try{
+      
+      await registerService(user);
+      dispatch(success(user));
+      history.push('/');
+    }
+    catch (error){
+      debugger;
+      console.log(error)
+      dispatch(failure(error));
+      //dispatch(alertActions.error(error));
+    }
+  }
+}  
+  
 export const request = (user) => ({
   type: userConstants.REGISTER_REQUEST, user
 })
